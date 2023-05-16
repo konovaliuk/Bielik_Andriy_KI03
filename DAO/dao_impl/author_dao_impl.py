@@ -1,10 +1,11 @@
 from DAO.interfaces.author_dao import AuthorDao
 from models.author import Author
+from connection.connection_pool import MySQLConnectionPool
 
 
 class AuthorDaoImpl(AuthorDao):
-    def __init__(self, connection_pool):
-        self.cnx = connection_pool
+    def __init__(self):
+        self.cnx = MySQLConnectionPool().get_connection()
 
     def read_by_id(self, author_id: int):
         query = (f"SELECT * FROM author WHERE author_id={author_id}")

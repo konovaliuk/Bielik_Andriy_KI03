@@ -1,8 +1,7 @@
-from flask import request
 from service.usr import UserService
 
 
-class Register():
+class Register:
     def __init__(self, Request):
         self.request = Request
 
@@ -12,7 +11,8 @@ class Register():
         email = self.request.form['email']
         phone = self.request.form['phone']
         if self.request.form['password'] != self.request.form['confirm-password']:
-            return 0
+            return False, None, "Схоже, ви ввели два різних паролі. Вони не співпадають."
         else:
             password = self.request.form['password']
         return UserService().register(name, surname, email, phone, password)
+

@@ -7,9 +7,21 @@ class BookDao(ABC):
         pass
 
     @abstractmethod
+    def check_book(self, obj: object):
+        pass
+
+    @abstractmethod
+    def get_books(self):
+        pass
+
+    @abstractmethod
+    def get_books_with_id(self, obj: object):
+        pass
+
+    @abstractmethod
     def add(self, obj: object):
         pass
 
     @abstractmethod
     def delete(self, obj: object):
-       pass
+        pass

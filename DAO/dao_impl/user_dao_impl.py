@@ -1,11 +1,12 @@
 import hashlib
+from connection.connection_pool import MySQLConnectionPool
 from models.user import User
 from DAO.interfaces.user_dao import UserDao
 
 
 class UserDaoImpl(UserDao):
-    def __init__(self, connection_pool):
-        self.cnx = connection_pool
+    def __init__(self):
+        self.cnx = MySQLConnectionPool().get_connection()
 
     def read_by_id(self, user_id: int):
         query = (f"SELECT * FROM users WHERE user_id={user_id}")
@@ -14,11 +15,9 @@ class UserDaoImpl(UserDao):
             cursor = conn.cursor()
             cursor.execute(query)
             result = User(*cursor.fetchone())
-            #result.print()
             cursor.close()
             return result
         except:
-            #print("Схоже, сталася помилка. Скоріш за все, користувача з таким id не знайдено.")
             return None
 
     def read_by_email(self, email: str):
@@ -28,11 +27,10 @@ class UserDaoImpl(UserDao):
             cursor = conn.cursor()
             cursor.execute(query)
             result = User(*cursor.fetchone())
-            #result.print()
+            # result.print()
             cursor.close()
             return result
         except:
-            #print("Схоже, сталася помилка. Скоріш за все, користувача з таким email не знайдено.")
             return None
 
     def read_by_phone(self, phone: str):
@@ -42,11 +40,10 @@ class UserDaoImpl(UserDao):
             cursor = conn.cursor()
             cursor.execute(query)
             result = User(*cursor.fetchone())
-            #result.print()
+            # result.print()
             cursor.close()
             return result
         except:
-            #print("Схоже, сталася помилка. Скоріш за все, користувача з таким номером телефону не знайдено.")
             return None
 
     def add(self, user: User):
@@ -58,7 +55,7 @@ class UserDaoImpl(UserDao):
             conn.commit()
             cursor.close()
         except:
-            print("Схоже, сталася помилка. Спробуйте ще раз")
+            raise Exception()
 
     def delete(self, user_id: int):
         query = (f"DELETE FROM users WHERE user_id={user_id}")
@@ -69,4 +66,4 @@ class UserDaoImpl(UserDao):
             conn.commit()
             cursor.close()
         except:
-            print("Схоже, сталася помилка. Спробуйте ще раз")
+            raise Exception()
