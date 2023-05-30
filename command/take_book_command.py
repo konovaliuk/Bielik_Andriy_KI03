@@ -15,4 +15,4 @@ class TakeBook:
         else:
             user_data = session.get('user')
             user = User.from_dict(user_data)
-            return OrderService().make_order(book_id, user.id)
+            return OrderService().make_order(book_id, user.get_id())

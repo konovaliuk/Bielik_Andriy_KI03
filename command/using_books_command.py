@@ -11,5 +11,5 @@ class ShowBooks:
     def execute(self):
         user_data = session.get('user')
         user = User.from_dict(user_data)
-        return ReaderService().show_books(user.id)
+        return ReaderService().show_books(user.get_id())
 
