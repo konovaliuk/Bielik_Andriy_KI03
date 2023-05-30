@@ -1,35 +1,27 @@
-class Book:
-    #def __init__(self, Id, Author, Key_words, Title, Amount_of_pages, Book_status=1):
-    #    self.id = Id
-    #    if isinstance(Author, int):
-    #        self.author_id = Author
-    #   else:
-    #        self.author_id = Author.id
-    #   self.book_status = Book_status
-    #    self.key_words = Key_words
-    #    self.title = Title
-    #    self.amount_of_pages = Amount_of_pages
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+
+class Book(Base):
+    __tablename__ = 'book'
+
+    idbook = Column(Integer, primary_key=True)
+    author_id = Column(Integer, ForeignKey('author.author_id'))
+    book_status = Column(Integer, ForeignKey('book_status.status_id'))
+    key_words = Column(String)
+    title = Column(String)
+    amount_of_pages = Column(Integer)
+
     def __init__(self, Author_Name, Author_nationality, Status, ID, Key_words, Title, Amount_of_pages):
-        self.id = ID
         self.author_name = Author_Name
-        self.author_nationality = Author_nationality
-        self.status = Status
+        self.nationality = Author_nationality
+        self.book_status = Status
+        self.idbook = ID
         self.key_words = Key_words
         self.title = Title
         self.amount_of_pages = Amount_of_pages
 
     def print(self):
-        print(self.author_name, self.author_nationality, self.status, self.key_words, self.title, self.amount_of_pages)
-    #    if self.book_status == 1:
-    #        print(
-    #            f" Місце книжки на полці - {self.id}, ID автора книжки - {self.author_id}, Статус - доступна, Назва - '{self.title}'.")
-    #    else:
-    #        print(
-    #            f" Місце книжки на полці - {self.id}, ID автора книжки - {self.author_id}, Статус - не доступна, "
-    #            f"Назва - {self.title}")
-
-    #def get_all(self):
-    #    return self.id, self.author_id, self.book_status, self.key_words, self.title, self.amount_of_pages
-
-    #def set_book_status_id(self, Book_status):
-    #    self.book_status = Book_status
+        print(self.author_name, self.nationality, self.book_status, self.key_words, self.title, self.amount_of_pages)

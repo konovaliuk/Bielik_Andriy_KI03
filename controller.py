@@ -19,7 +19,7 @@ def register():
     if request.method == 'POST':
         result = Register(request).execute()
         if result[0]:
-            return render_template("profile.html")
+            return redirect('profile')
         else:
             return render_template("error.html", error_text=result[2])
     else:

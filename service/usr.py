@@ -16,8 +16,9 @@ class UserService:
             return False, None, "Схоже, користувач з таким номером телефону вже існує. Спробуйте ще раз."
         user = User.create(name, surname, email, phone, password)
         try:
-            user_table.add(user)
-            session['user'] = user.to_dict()
+            user = user_table.add(user)
+            user_to_dict = user_table.read_by_phone(phone)
+            session['user'] = user_to_dict.to_dict()
             return True, None, None
         except Exception as e:
             return False, None, str(e)

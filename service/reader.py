@@ -21,5 +21,3 @@ class ReaderService:
         except Exception as e:
             return False, None, str(e)
 
-
-
