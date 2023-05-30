@@ -1,69 +1,43 @@
-import hashlib
-from connection.connection_pool import MySQLConnectionPool
-from models.user import User
 from DAO.interfaces.user_dao import UserDao
+from connection.database import DatabaseConnection
+from models.user import User
 
 
 class UserDaoImpl(UserDao):
     def __init__(self):
-        self.cnx = MySQLConnectionPool().get_connection()
+        self.cnx = DatabaseConnection().get_session()
 
     def read_by_id(self, user_id: int):
-        query = (f"SELECT * FROM users WHERE user_id={user_id}")
         try:
-            conn = self.cnx.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(query)
-            result = User(*cursor.fetchone())
-            cursor.close()
-            return result
+            return self.cnx.query(User).filter(User.user_id == user_id).first()
         except:
             return None
 
-    def read_by_email(self, email: str):
-        query = "SELECT * FROM users WHERE users_email = '{}'".format(email)
+    def read_by_email(self, users_email: str):
         try:
-            conn = self.cnx.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(query)
-            result = User(*cursor.fetchone())
-            # result.print()
-            cursor.close()
-            return result
+            return self.cnx.query(User).filter(User.users_email == users_email).first()
         except:
             return None
 
-    def read_by_phone(self, phone: str):
-        query = "SELECT * FROM users WHERE user_phone = '{}'".format(phone)
+    def read_by_phone(self, user_phone: str):
         try:
-            conn = self.cnx.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(query)
-            result = User(*cursor.fetchone())
-            # result.print()
-            cursor.close()
-            return result
+            return self.cnx.query(User).filter(User.user_phone == user_phone).first()
         except:
             return None
 
     def add(self, user: User):
-        query = f"INSERT INTO users(user_name, user_surname, users_email, user_phone, user_password, user_role_id) VALUES('{user.name}', '{user.surname}', '{user.email}', '{user.phone}', '{hashlib.md5(user.password.encode()).hexdigest()}', '{user.role}') "
         try:
-            conn = self.cnx.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(query)
-            conn.commit()
-            cursor.close()
+            user.update_pass()
+            self.cnx.add(user)
+            self.cnx.commit()
         except:
             raise Exception()
 
     def delete(self, user_id: int):
-        query = (f"DELETE FROM users WHERE user_id={user_id}")
         try:
-            conn = self.cnx.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(query)
-            conn.commit()
-            cursor.close()
+            user = self.read_by_id(user_id)
+            if user:
+                self.cnx.delete(user)
+                self.cnx.commit()
         except:
             raise Exception()

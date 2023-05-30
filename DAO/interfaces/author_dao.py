@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class AuthorDao(ABC):
     @abstractmethod
-    def read_by_id(self, obj: object):
+    def read_by_id(self, author_id: int):
         pass
 
     @abstractmethod
@@ -11,5 +11,5 @@ class AuthorDao(ABC):
         pass
 
     @abstractmethod
-    def delete(self, obj: object):
+    def delete(self, author_id: int):
         pass

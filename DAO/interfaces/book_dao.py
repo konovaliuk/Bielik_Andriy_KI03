@@ -15,7 +15,7 @@ class BookDao(ABC):
         pass
 
     @abstractmethod
-    def get_books_with_id(self, obj: object):
+    def get_books_with_id(self, user_id: int):
         pass
 
     @abstractmethod
@@ -23,5 +23,5 @@ class BookDao(ABC):
         pass
 
     @abstractmethod
-    def delete(self, obj: object):
+    def delete(self, book_id: int):
         pass
