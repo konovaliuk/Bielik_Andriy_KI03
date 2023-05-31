@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'user'
 
 
-@app.route('/')  # головна сторінка
+@app.route('/', methods=['GET'])  # головна сторінка
 def home():
     return render_template("home.html")
 
@@ -21,7 +21,7 @@ def register():
         if result[0]:
             return redirect('profile')
         else:
-            return render_template("error.html", error_text=result[2])
+            return render_template("error.html", error_text=result[2], next_st="main_page")
     else:
         return render_template("register.html")
 
@@ -36,7 +36,7 @@ def authorization():
             else:
                 return redirect('admin')
         else:
-            return render_template("error.html", error_text=result[2])
+            return render_template("error.html", error_text=result[2], next_st="main_page")
     else:
         return render_template("authorization.html")
 
@@ -53,6 +53,8 @@ def profile():
             return redirect(url_for('order'))
         if action == 'view_books':
             return redirect(url_for('mybook'))
+        if action == 'exit':
+            return redirect(url_for('home'))
     return redirect(url_for('profile'))
 
 
@@ -62,7 +64,7 @@ def catalog():
     if result[0]:
         return render_template('catalog.html', page_title='Каталог книжок', books=result[1])
     else:
-        return render_template("error.html", error_text=result[2])
+        return render_template("error.html", error_text=result[2], next_st="profile")
 
 
 @app.route('/profile/order', methods=['GET', 'POST'])
@@ -72,13 +74,13 @@ def order():
         if request.method == 'POST':
             result_2 = TakeBook(request).execute()
             if result_2[0]:
-                return render_template('text.html', text=result_2[2])
+                return render_template('text.html', text=result_2[2], next_st="profile")
             else:
-                return render_template('error.html', error_text=result_2[2])
+                return render_template('error.html', error_text=result_2[2], next_st="profile")
         else:
             return render_template('order.html', books=result[1])
     else:
-        return render_template("error.html", error_text=result[2])
+        return render_template("error.html", error_text=result[2], next_st="main_page")
 
 
 @app.route('/profile/mybook')
@@ -87,7 +89,7 @@ def mybook():
     if result[0]:
         return render_template('catalog.html', page_title='Книжки, які ви читаєте', books=result[1])
     else:
-        return render_template("error.html", error_text=result[2])
+        return render_template("error.html", error_text=result[2], next_st="profile")
 
 
 @app.route('/admin', methods=['GET', 'POST'])  # адміністратор
@@ -107,17 +109,17 @@ def admin():
 
 @app.route('/admin/catalog_filling')
 def catalog_filling():
-    return render_template("text.html", text="Not ready yet")
+    return render_template("text.html", text="Not ready yet", next_st="main_page")
 
 
 @app.route('/admin/accept_order')
 def accept_order():
-    return render_template("text.html", text="Not ready yet")
+    return render_template("text.html", text="Not ready yet", next_st="main_page")
 
 
 @app.route('/admin/readers_page')
 def readers_page():
-    return render_template("text.html", text="Not ready yet")
+    return render_template("text.html", text="Not ready yet", next_st="main_page")
 
 
 def launch():

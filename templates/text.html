@@ -45,7 +45,11 @@
         <p>{{ text }}</p>
     {% endif %}
 
-    <a class="button" href="/">На головну</a>
+    {% if next_st == "profile" %}
+        <a class="button" href="/profile">Назад</a>
+    {% elif next_st == "main_page" %}
+        <a class="button" href="/">На головну</a>
+    {% endif %}
 
 </body>
 </html>

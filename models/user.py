@@ -59,3 +59,5 @@ class User(Base):
 
     def update_pass(self):
         self.user_password = hashlib.md5(self.user_password.encode()).hexdigest()
+
+

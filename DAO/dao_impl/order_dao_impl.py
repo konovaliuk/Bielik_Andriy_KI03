@@ -6,8 +6,8 @@ from models.order import Order
 
 
 class OrderDaoImpl(OrderDao):
-    def __init__(self):
-        self.cnx = DatabaseConnection().get_session()
+    def __init__(self, db_session=None):
+        self.cnx = db_session or DatabaseConnection().get_session()
 
     def create(self, order: Order):
         try:

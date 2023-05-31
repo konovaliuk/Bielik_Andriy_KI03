@@ -4,8 +4,8 @@ from models.user import User
 
 
 class UserDaoImpl(UserDao):
-    def __init__(self):
-        self.cnx = DatabaseConnection().get_session()
+    def __init__(self, db_session=None):
+        self.cnx = db_session or DatabaseConnection().get_session()
 
     def read_by_id(self, user_id: int):
         try:
